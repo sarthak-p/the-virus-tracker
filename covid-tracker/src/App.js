@@ -25,6 +25,12 @@ function App() {
     };
     getCountriesData(); 
   }, []);
+
+  const onCountryChange = (event) => {
+    const countryCode = event.target.value;
+    console.log('Y000>>>>', countryCode);
+    setCountry(countryCode); 
+  }
   
   return (
     //BEM naming convention
@@ -33,8 +39,9 @@ function App() {
         <h1>Covid-19 Tracker</h1>
       <FormControl className="app_dropdown">
         <Select
-          variant="outlined"
-            value={country} >
+            variant="outlined"
+            value={country}
+            onChange={onCountryChange}>
            <MenuItem value = "worldwide">Worldwide</MenuItem>
             {/* Loop through all the countries 
                 and show a dropdown list of the options */}
