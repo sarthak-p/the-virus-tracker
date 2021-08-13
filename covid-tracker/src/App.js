@@ -2,21 +2,18 @@ import React, { useEffect, useState } from "react";
 import './App.css';
 import { MenuItem, FormControl, Select, CardContent, Card} from "@material-ui/core";
 
-
-//https://disease.sh/v3/covid-19/countries
-
-
 function App() {
 
   //STATE = writing a variable in REACT
-  const [countries, setCountries] = useState(["UK"]);
+  const [countries, setCountries] = useState([]);
+  const [country, setCountry] = useState("worldwide");
 
   //USEFFECT = Runs a piece of code based on a given condition 
   useEffect(() => {
     //async -> send a request to the server, wait for it, and do something with it 
 
     const getCountriesData = async () => {
-      await fetch("https://disease.sh/v3/covid-19/countries")
+      await fetch("https://disease.sh/v3/covid-19/countries") //API retrieved from disease.sh
         .then((response) => response.json())
           .then((data) => {
             const countries = data.map((country) => ({
@@ -37,10 +34,11 @@ function App() {
       <FormControl className="app_dropdown">
         <Select
           variant="outlined"
-            value="abc" >
-          
+            value={country} >
+           <MenuItem value = "worldwide">Worldwide</MenuItem>
             {/* Loop through all the countries 
                 and show a dropdown list of the options */}
+           
             {countries.map((country) => (
               <MenuItem value={country.value}>{country.name}</MenuItem>
             ))}
