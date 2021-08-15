@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import './App.css';
-import { MenuItem, FormControl, Select, CardContent, Card} from "@material-ui/core";
+import { MenuItem, FormControl, Select, CardContent, Card } from "@material-ui/core";
+import InfoBox from "./InfoBox";
+import Map from "./Map"; 
 
 function App() {
 
@@ -28,13 +30,13 @@ function App() {
 
   const onCountryChange = (event) => {
     const countryCode = event.target.value;
-    console.log('Y000>>>>', countryCode);
     setCountry(countryCode); 
   }
   
   return (
     //BEM naming convention
     <div className="app">
+      <div className="app_left">
       <div className="app_header">
         <h1>Covid-19 Tracker</h1>
       <FormControl className="app_dropdown">
@@ -58,6 +60,23 @@ function App() {
         </Select>
       </FormControl>
         </div>
+
+      <div className="app_stats">
+        <InfoBox title="Coronavirus cases" total={2000} cases={500}/>
+        <InfoBox title="Recovered" total={5000} cases={500}/>
+        <InfoBox title="Deaths" total={6000} cases={500}/>
+      </div>
+        
+        <Map />
+    </div>
+      
+      <Card className="app_right">
+        <CardContent>
+          <h3>Live cases by country</h3>
+          <h3>Worldwide new cases</h3>
+        </CardContent>
+
+      </Card>
     </div>
   );
 }
