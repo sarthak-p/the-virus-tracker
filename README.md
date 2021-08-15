@@ -1,4 +1,4 @@
-# Covid-19 Tracker
+# The Virus Tracker
 
 Realtime COVID-19 Tracker that provides the number of new and total cases, deaths, and recoveries for every country around the world through numerals and charts.
 
