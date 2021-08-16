@@ -9,11 +9,19 @@ function App() {
   //STATE = writing a variable in REACT
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide");
+  const [countryInfo, setCountryInfo] = useState({});
+  
+  useEffect(() => {
+    fetch("https://disease.sh/v3/covid-19/all")
+      .then((response) => response.json())
+      .then((data) => {
+        setCountryInfo(data);
+      });
+  }, []);
 
   //USEFFECT = Runs a piece of code based on a given condition 
   useEffect(() => {
     //async -> send a request to the server, wait for it, and do something with it 
-
     const getCountriesData = async () => {
       await fetch("https://disease.sh/v3/covid-19/countries") //API retrieved from disease.sh
         .then((response) => response.json())
@@ -28,10 +36,23 @@ function App() {
     getCountriesData(); 
   }, []);
 
-  const onCountryChange = (event) => {
+  const onCountryChange = async (event) => {
     const countryCode = event.target.value;
     setCountry(countryCode); 
-  }
+
+  const url = countryCode === "worldwide" ? "https://disease.sh/v3/covid-19/all"
+      : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+  
+   await fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setCountry(countryCode);
+        setCountryInfo(data);
+    });
+};
+  
+console.log("Country info", countryInfo);
+
   
   return (
     //BEM naming convention
@@ -45,9 +66,9 @@ function App() {
             value={country}
             onChange={onCountryChange}>
            <MenuItem value = "worldwide">Worldwide</MenuItem>
-            {/* Loop through all the countries 
+            
+              {/* Loop through all the countries
                 and show a dropdown list of the options */}
-           
             {countries.map((country) => (
               <MenuItem value={country.value}>{country.name}</MenuItem>
             ))}
@@ -62,9 +83,9 @@ function App() {
         </div>
 
       <div className="app_stats">
-        <InfoBox title="Coronavirus cases" total={2000} cases={500}/>
-        <InfoBox title="Recovered" total={5000} cases={500}/>
-        <InfoBox title="Deaths" total={6000} cases={500}/>
+        <InfoBox title="Coronavirus cases" cases={countryInfo.todayCases} total={countryInfo.cases}/>
+        <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered}/>
+        <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths}/>
       </div>
         
         <Map />
